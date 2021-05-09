@@ -44,26 +44,22 @@ Route::group(['middleware' => ['web'], 'namespace' => '\BinshopsBlog\Controllers
         Route::get('/', 'BinshopsTutorialReaderController@index')
             ->name('binshopstutorial.index');
 
-        Route::get('/search', 'BinshopsBlogReaderController@search')
+        Route::get('/search', 'BinshopsTutorialReaderController@search')
             ->name('binshopstutorial.search');
 
-        Route::get('/feed', 'BinshopsBlogRssFeedController@feed')
+        Route::get('/feed', 'BinshopsTutorialRssFeedController@feed')
             ->name('binshopstutorial.feed'); //RSS feed
 
-        Route::get('/category{subcategories}', 'BinshopsBlogReaderController@view_category')->where('subcategories', '^[a-zA-Z0-9-_\/]+$')->name('binshopsblog.view_category');
-
-//        Route::get('/category/{categorySlug}',
-//            'BinshopsBlogReaderController@view_category')
-//            ->name('binshopsblog.view_category');
+        Route::get('/{subcategories}', 'BinshopsTutorialReaderController@view_category')->where('subcategories', '^[a-zA-Z0-9-_\/]+$')->name('binshopsblog.view_category');
 
         Route::get('/{blogPostSlug}',
-            'BinshopsBlogReaderController@viewSinglePost')
+            'BinshopsTutorialReaderController@viewSinglePost')
             ->name('binshopstutorial.single');
 
         // throttle to a max of 10 attempts in 3 minutes:
         Route::group(['middleware' => 'throttle:10,3'], function () {
             Route::post('save_comment/{blogPostSlug}',
-                'BinshopsBlogCommentWriterController@addNewComment')
+                'BinshopsTutorialCommentWriterController@addNewComment')
                 ->name('binshopstutorial.comments.add_new_comment');
         });
     });

@@ -20,7 +20,7 @@ class BinshopsTutorialReaderController extends Controller
     use UsesCaptcha;
 
     /**
-     * Show blog posts
+     * Show Tutorial Categories
      * If category_slug is set, then only show from that category
      *
      * @param null $category_slug
@@ -29,21 +29,17 @@ class BinshopsTutorialReaderController extends Controller
     public function index($category_slug = null)
     {
         // the published_at + is_published are handled by BinshopsBlogPublishedScope, and don't take effect if the logged in user can manageb log posts
-        $title = 'Blog Page'; // default title...
+        $title = 'Tutorial Page'; // default title...
 
         $categoryChain = null;
-        if ($category_slug) {
-            $category = BinshopsBlogCategory::where("slug", $category_slug)->firstOrFail();
-            $categoryChain = $category->getAncestorsAndSelf();
-            $posts = $category->posts()->where("binshops_blog_post_categories.binshops_blog_category_id", $category->id);
+        $category = BinshopsBlogCategory::where("slug", $category_slug)->firstOrFail();
+        $categoryChain = $category->getAncestorsAndSelf();
+        $posts = $category->posts()->where("binshops_blog_post_categories.binshops_blog_category_id", $category->id);
 
-            // at the moment we handle this special case (viewing a category) by hard coding in the following two lines.
-            // You can easily override this in the view files.
-            \View::share('BinshopsBlog_category', $category); // so the view can say "You are viewing $CATEGORYNAME category posts"
-            $title = 'Posts in ' . $category->category_name . " category"; // hardcode title here...
-        } else {
-            $posts = BinshopsBlogPost::query();
-        }
+        // at the moment we handle this special case (viewing a category) by hard coding in the following two lines.
+        // You can easily override this in the view files.
+        \View::share('BinshopsBlog_category', $category); // so the view can say "You are viewing $CATEGORYNAME category posts"
+        $title = 'Posts in ' . $category->category_name . " category"; // hardcode title here...
 
         $posts = $posts->where('is_published', '=', 1)->where('posted_at', '<', Carbon::now()->format('Y-m-d H:i:s'))->orderBy("posted_at", "desc")->paginate(config("binshopsblog.per_page", 10));
 
