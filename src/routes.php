@@ -38,8 +38,38 @@ Route::group(['middleware' => ['web'], 'namespace' => '\BinshopsBlog\Controllers
 
     });
 
+    /** The main public facing tutorials routes */
+    Route::group(['prefix' => config('binshopsblog.tutorial_prefix', 'tutorial'), 'namespace' => '\BinshopsBlog\Controllers\Tutorial'], function () {
 
-    /* Admin backend routes - CRUD for posts, categories, and approving/deleting submitted comments */
+        Route::get('/', 'BinshopsTutorialReaderController@index')
+            ->name('binshopstutorial.index');
+
+        Route::get('/search', 'BinshopsBlogReaderController@search')
+            ->name('binshopstutorial.search');
+
+        Route::get('/feed', 'BinshopsBlogRssFeedController@feed')
+            ->name('binshopstutorial.feed'); //RSS feed
+
+        Route::get('/category{subcategories}', 'BinshopsBlogReaderController@view_category')->where('subcategories', '^[a-zA-Z0-9-_\/]+$')->name('binshopsblog.view_category');
+
+//        Route::get('/category/{categorySlug}',
+//            'BinshopsBlogReaderController@view_category')
+//            ->name('binshopsblog.view_category');
+
+        Route::get('/{blogPostSlug}',
+            'BinshopsBlogReaderController@viewSinglePost')
+            ->name('binshopstutorial.single');
+
+        // throttle to a max of 10 attempts in 3 minutes:
+        Route::group(['middleware' => 'throttle:10,3'], function () {
+            Route::post('save_comment/{blogPostSlug}',
+                'BinshopsBlogCommentWriterController@addNewComment')
+                ->name('binshopstutorial.comments.add_new_comment');
+        });
+    });
+
+
+    /** Admin backend routes - CRUD for posts, categories, and approving/deleting submitted comments */
     Route::group(['prefix' => config('binshopsblog.admin_prefix', 'blog_admin')], function () {
 
         Route::get('/', 'BinshopsBlogAdminController@index')
