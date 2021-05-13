@@ -41,7 +41,7 @@ class BinshopsTutorialReaderController extends Controller
         \View::share('BinshopsBlog_category', $category); // so the view can say "You are viewing $CATEGORYNAME category posts"
         $title = 'Posts in ' . $category->category_name . " category"; // hardcode title here...
 
-        $posts = $posts->where('is_published', '=', 1)->where('posted_at', '<', Carbon::now()->format('Y-m-d H:i:s'))->orderBy("posted_at", "desc")->paginate(config("binshopsblog.per_page", 10));
+        $posts = $posts->where('is_tutorial', '=', 1)->where('is_published', '=', 1)->where('posted_at', '<', Carbon::now()->format('Y-m-d H:i:s'))->orderBy("posted_at", "desc")->paginate(config("binshopsblog.per_page", 10));
 
         //load categories in 3 levels
         $rootList = BinshopsBlogCategory::where('parent_id' ,'=' , null)->get();
@@ -52,7 +52,7 @@ class BinshopsTutorialReaderController extends Controller
             }
         }
 
-        return view("binshopsblog::index", [
+        return view("vendor.binshopstutorial.index", [
             'category_chain' => $categoryChain,
             'categories' => $rootList,
             'posts' => $posts,
