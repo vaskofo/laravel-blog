@@ -6,7 +6,7 @@
 
 @section("content")
 
-    <div class='col-sm-12 BinshopsBlog_container'>
+    <div class='container'>
         @if(\Auth::check() && \Auth::user()->canManageBinshopsBlogPosts())
             <div class="text-center">
                 <p class='mb-1'>You are logged in as a blog admin user.
@@ -20,7 +20,7 @@
         @endif
 
         <div class="row">
-            <div class="col-md-9">
+            <div class="col-md-12">
 
                 @if($category_chain)
                     <div class="container">
@@ -46,7 +46,18 @@
                 @endif
 
                 <div class="container">
+                    <h6>Tutorials</h6>
                     <div class="row">
+                        @forelse($categories as $category)
+                            <a href="{{$category->url()}}">
+                                <h6>{{$category->category_name}}</h6>
+                            </a>
+                        @empty
+                            <a href="#">
+                                <h6>No Categories</h6>
+                            </a>
+                        @endforelse
+
                         @forelse($posts as $post)
                             @include("binshopsblog::partials.index_loop")
                         @empty
@@ -56,18 +67,6 @@
                         @endforelse
                     </div>
                 </div>
-            </div>
-            <div class="col-md-3">
-                <h6>Blog Categories</h6>
-                @forelse($categories as $category)
-                    <a href="{{$category->url()}}">
-                        <h6>{{$category->category_name}}</h6>
-                    </a>
-                @empty
-                    <a href="#">
-                        <h6>No Categories</h6>
-                    </a>
-                @endforelse
             </div>
         </div>
 

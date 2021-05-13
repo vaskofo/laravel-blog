@@ -1,4 +1,15 @@
 <div class="form-group">
+    <div class="btn-group btn-group-toggle" data-toggle="buttons">
+        <label class="btn btn-secondary active">
+            <input type="radio" name="is_tutorial" id="option1" value="0" checked> Post
+        </label>
+        <label class="btn btn-secondary">
+            <input type="radio" name="is_tutorial" id="option2" value="1"> Tutorial
+        </label>
+    </div>
+</div>
+
+<div class="form-group">
     <label for="blog_title">Blog Post Title</label>
     <input type="text" class="form-control" required id="blog_title" aria-describedby="blog_title_help" name='title'
            value="{{old("title",$post->title)}}">

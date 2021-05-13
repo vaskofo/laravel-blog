@@ -51,6 +51,8 @@ class BinshopsBlogPost extends Model implements SearchResultInterface
 
         'is_published',
         'posted_at',
+
+        'is_tutorial',
     ];
 
     /**
