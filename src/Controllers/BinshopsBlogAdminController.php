@@ -46,10 +46,23 @@ class BinshopsBlogAdminController extends Controller
      */
     public function index()
     {
-        $posts = BinshopsBlogPost::orderBy("posted_at", "desc")
+        $posts = BinshopsBlogPost::orderBy("posted_at", "desc")->where('is_tutorial', '=', 0)
             ->paginate(10);
 
-        return view("binshopsblog_admin::index", ['posts'=>$posts]);
+        return view("BinshopsBlog_admin::index", ['posts'=>$posts]);
+    }
+
+    /**
+     * View all Tutorials
+     *
+     * @return mixed
+     */
+    public function tutorials()
+    {
+        $posts = BinshopsBlogPost::orderBy("posted_at", "desc")->where('is_tutorial', '=', 1)
+            ->paginate(10);
+
+        return view("BinshopsBlog_admin::index", ['posts'=>$posts]);
     }
 
     /**

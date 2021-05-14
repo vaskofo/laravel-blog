@@ -18,6 +18,13 @@
                             class="fa fa-th fa-fw"
                             aria-hidden="true"></i>
                     All Posts</a>
+
+                <a href='{{ route('binshopsblog.admin.tutorials') }}'
+                   class='list-group-item list-group-color list-group-item list-group-color-action @if(\Request::route()->getName() === 'binshopsblog.admin.tutorials') active @endif  '><i
+                            class="fa fa-th fa-list"
+                            aria-hidden="true"></i>
+                    All Tutorials</a>
+
                 <a href='{{ route('binshopsblog.admin.create_post') }}'
                    class='list-group-item list-group-color list-group-item list-group-color-action  @if(\Request::route()->getName() === 'binshopsblog.admin.create_post') active @endif  '><i
                             class="fa fa-plus fa-fw" aria-hidden="true"></i>

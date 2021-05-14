@@ -71,6 +71,9 @@ Route::group(['middleware' => ['web'], 'namespace' => '\BinshopsBlog\Controllers
         Route::get('/', 'BinshopsBlogAdminController@index')
             ->name('binshopsblog.admin.index');
 
+        Route::get('/tutorials', 'BinshopsBlogAdminController@tutorials')
+            ->name('binshopsblog.admin.tutorials');
+
         Route::get('/add_post',
             'BinshopsBlogAdminController@create_post')
             ->name('binshopsblog.admin.create_post');
