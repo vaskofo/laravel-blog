@@ -1,13 +1,15 @@
-<div class="form-group">
-    <div class="btn-group btn-group-toggle" data-toggle="buttons">
-        <label class="btn btn-secondary active">
-            <input type="radio" name="is_tutorial" id="option1" value="0" checked> Post
-        </label>
-        <label class="btn btn-secondary">
-            <input type="radio" name="is_tutorial" id="option2" value="1"> Tutorial
-        </label>
+@if(\Request::route()->getName() !== 'binshopsblog.admin.edit_post')
+    <div class="form-group">
+        <div class="btn-group btn-group-toggle" data-toggle="buttons">
+            <label class="btn btn-secondary active">
+                <input type="radio" name="is_tutorial" id="option1" value="0" checked> Post
+            </label>
+            <label class="btn btn-secondary">
+                <input type="radio" name="is_tutorial" id="option2" value="1"> Tutorial
+            </label>
+        </div>
     </div>
-</div>
+@endif
 
 <div class="form-group">
     <label for="blog_title">Blog Post Title</label>
@@ -119,7 +121,7 @@
 <div class="form-group">
     <label for="blog_seo_title">SEO: {{"<title>"}} tag (optional)</label>
     <input class="form-control" id="blog_seo_title" aria-describedby="blog_seo_title_help"
-              name='seo_title' tyoe='text' value='{{old("seo_title",$post->seo_title)}}' >
+           name='seo_title' tyoe='text' value='{{old("seo_title",$post->seo_title)}}' >
     <small id="blog_seo_title_help" class="form-text text-muted">Enter a value for the {{"<title>"}} tag. If nothing is provided here we will just use the normal post title from above (optional)</small>
 </div>
 
@@ -210,7 +212,7 @@
         <div class='col-md-12 my-3 text-center'>
 
             <em><a class="a-link-cart-color" target='_blank' href='{{route("binshopsblog.admin.categories.create_category")}}'><i class="fa fa-external-link" aria-hidden="true"></i>
-                      Add new categories
+                    Add new categories
                     here</a></em>
         </div>
     </div>
