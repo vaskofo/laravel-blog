@@ -12,17 +12,17 @@
 @endif
 
 <div class="form-group">
-    <label for="blog_title">Blog Post Title</label>
+    <label for="blog_title">Post Title</label>
     <input type="text" class="form-control" required id="blog_title" aria-describedby="blog_title_help" name='title'
            value="{{old("title",$post->title)}}">
-    <small id="blog_title_help" class="form-text text-muted">The title of the blog post</small>
+    <small id="blog_title_help" class="form-text text-muted">The title of the post</small>
 </div>
 
 <div class="form-group">
     <label for="blog_subtitle">Subtitle</label>
     <input type="text" class="form-control" id="blog_subtitle" aria-describedby="blog_subtitle_help" name='subtitle'
            value='{{old("subtitle",$post->subtitle)}}'>
-    <small id="blog_subtitle_help" class="form-text text-muted">The subtitle of the blog post (optional)</small>
+    <small id="blog_subtitle_help" class="form-text text-muted">The subtitle of the post (optional)</small>
 </div>
 
 
