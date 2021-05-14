@@ -53,7 +53,7 @@ Route::group(['middleware' => ['web'], 'namespace' => '\BinshopsBlog\Controllers
         Route::get('/category{subcategories}', 'BinshopsBlogReaderController@view_category_tutorial')->where('subcategories', '^[a-zA-Z0-9-_\/]+$')->name('binshopstutorial.view_category');
 
         Route::get('/{blogPostSlug}',
-            'BinshopsBlogReaderController@viewSinglePost')
+            'BinshopsBlogReaderController@viewSinglePostTutorial')
             ->name('binshopstutorial.single');
 
         // throttle to a max of 10 attempts in 3 minutes:

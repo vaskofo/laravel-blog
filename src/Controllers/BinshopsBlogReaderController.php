@@ -131,12 +131,6 @@ class BinshopsBlogReaderController extends Controller
         $blog_post = BinshopsBlogPost::where("slug", $blogPostSlug)
             ->first();
 
-        if (!$blog_post){
-            $hierarchy = $blogPostSlug;
-            $categories = explode('/', $hierarchy);
-            return $this->tutorial_home(end($categories));
-        }
-
         if ($captcha = $this->getCaptchaObject()) {
             $captcha->runCaptchaBeforeShowingPosts($request, $blog_post);
         }
@@ -150,6 +144,16 @@ class BinshopsBlogReaderController extends Controller
             'captcha' => $captcha,
         ]);
     }
+
+    /**
+     * ============================================================================================
+     * ============================================================================================
+     *
+     * =======================                TUTORIAL SECTION              =======================
+     *
+     * ============================================================================================
+     * ============================================================================================
+     */
 
     /**
      * Show Tutorial Categories
@@ -186,6 +190,39 @@ class BinshopsBlogReaderController extends Controller
             'categories' => $rootList,
             'posts' => $posts,
             'title' => $title,
+        ]);
+    }
+
+    /**
+     * View a single post and (if enabled) it's comments
+     *
+     * @param Request $request
+     * @param $blogPostSlug
+     * @return mixed
+     */
+    public function viewSinglePostTutorial(Request $request, $blogPostSlug)
+    {
+        // the published_at + is_published are handled by BinshopsBlogPublishedScope, and don't take effect if the logged in user can manage log posts
+        $blog_post = BinshopsBlogPost::where("slug", $blogPostSlug)
+            ->first();
+
+        if (!$blog_post){
+            $hierarchy = $blogPostSlug;
+            $categories = explode('/', $hierarchy);
+            return $this->tutorial_home(end($categories));
+        }
+
+        if ($captcha = $this->getCaptchaObject()) {
+            $captcha->runCaptchaBeforeShowingPosts($request, $blog_post);
+        }
+
+        return view("binshopsblog::single_post", [
+            'post' => $blog_post,
+            // the default scope only selects approved comments, ordered by id
+            'comments' => $blog_post->comments()
+                ->with("user")
+                ->get(),
+            'captcha' => $captcha,
         ]);
     }
 }
