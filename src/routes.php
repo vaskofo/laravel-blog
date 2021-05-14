@@ -39,27 +39,27 @@ Route::group(['middleware' => ['web'], 'namespace' => '\BinshopsBlog\Controllers
     });
 
     /** The main public facing tutorials routes */
-    Route::group(['prefix' => config('binshopsblog.tutorial_prefix', 'tutorial'), 'namespace' => '\BinshopsBlog\Controllers\Tutorial'], function () {
+    Route::group(['prefix' => config('binshopsblog.tutorial_prefix', 'tutorial')], function () {
 
-        Route::get('/', 'BinshopsTutorialReaderController@index')
+        Route::get('/', 'BinshopsBlogReaderController@tutorial_home')
             ->name('binshopstutorial.index');
 
-        Route::get('/search', 'BinshopsTutorialReaderController@search')
+        Route::get('/search', 'BinshopsBlogReaderController@search')
             ->name('binshopstutorial.search');
 
-        Route::get('/feed', 'BinshopsTutorialRssFeedController@feed')
+        Route::get('/feed', 'BinshopsBlogRssFeedController@feed')
             ->name('binshopstutorial.feed'); //RSS feed
 
-        Route::get('/{subcategories}', 'BinshopsTutorialReaderController@view_category')->where('subcategories', '^[a-zA-Z0-9-_\/]+$')->name('binshopsblog.view_category');
+        Route::get('/category{subcategories}', 'BinshopsBlogReaderController@view_category_tutorial')->where('subcategories', '^[a-zA-Z0-9-_\/]+$')->name('binshopstutorial.view_category');
 
         Route::get('/{blogPostSlug}',
-            'BinshopsTutorialReaderController@viewSinglePost')
+            'BinshopsBlogReaderController@viewSinglePost')
             ->name('binshopstutorial.single');
 
         // throttle to a max of 10 attempts in 3 minutes:
         Route::group(['middleware' => 'throttle:10,3'], function () {
             Route::post('save_comment/{blogPostSlug}',
-                'BinshopsTutorialCommentWriterController@addNewComment')
+                'BinshopsBlogCommentWriterController@addNewComment')
                 ->name('binshopstutorial.comments.add_new_comment');
         });
     });

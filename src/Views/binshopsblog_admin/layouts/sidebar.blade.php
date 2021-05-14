@@ -17,7 +17,7 @@
                    class='list-group-item list-group-color list-group-item list-group-color-action @if(\Request::route()->getName() === 'binshopsblog.admin.index') active @endif  '><i
                             class="fa fa-th fa-fw"
                             aria-hidden="true"></i>
-                    All Posts</a>
+                    All Blog Posts</a>
 
                 <a href='{{ route('binshopsblog.admin.tutorials') }}'
                    class='list-group-item list-group-color list-group-item list-group-color-action @if(\Request::route()->getName() === 'binshopsblog.admin.tutorials') active @endif  '><i

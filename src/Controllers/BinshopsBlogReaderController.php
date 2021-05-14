@@ -106,6 +106,19 @@ class BinshopsBlogReaderController extends Controller
     }
 
     /**
+     * View all posts in $category_slug category tutorial
+     *
+     * @param Request $request
+     * @param $category_slug
+     * @return mixed
+     */
+    public function view_category_tutorial($hierarchy)
+    {
+        $categories = explode('/', $hierarchy);
+        return $this->tutorial_home(end($categories));
+    }
+
+    /**
      * View a single post and (if enabled) it's comments
      *
      * @param Request $request
@@ -116,7 +129,13 @@ class BinshopsBlogReaderController extends Controller
     {
         // the published_at + is_published are handled by BinshopsBlogPublishedScope, and don't take effect if the logged in user can manage log posts
         $blog_post = BinshopsBlogPost::where("slug", $blogPostSlug)
-            ->firstOrFail();
+            ->first();
+
+        if (!$blog_post){
+            $hierarchy = $blogPostSlug;
+            $categories = explode('/', $hierarchy);
+            return $this->tutorial_home(end($categories));
+        }
 
         if ($captcha = $this->getCaptchaObject()) {
             $captcha->runCaptchaBeforeShowingPosts($request, $blog_post);
@@ -132,4 +151,41 @@ class BinshopsBlogReaderController extends Controller
         ]);
     }
 
+    /**
+     * Show Tutorial Categories
+     * If category_slug is set, then only show from that category
+     *
+     * @param null $category_slug
+     * @return mixed
+     */
+    public function tutorial_home($category_slug = null)
+    {
+        // the published_at + is_published are handled by BinshopsBlogPublishedScope, and don't take effect if the logged in user can manageb log posts
+        $title = 'Tutorial Page'; // default title...
+
+        $category = BinshopsBlogCategory::where("slug", $category_slug)->firstOrFail();
+        $posts = $category->posts()->where("binshops_blog_post_categories.binshops_blog_category_id", $category->id);
+
+        // at the moment we handle this special case (viewing a category) by hard coding in the following two lines.
+        // You can easily override this in the view files.
+        \View::share('BinshopsBlog_category', $category); // so the view can say "You are viewing $CATEGORYNAME category posts"
+        $title = 'Posts in ' . $category->category_name . " category"; // hardcode title here...
+
+        $posts = $posts->where('is_tutorial', '=', 1)->where('is_published', '=', 1)->where('posted_at', '<', Carbon::now()->format('Y-m-d H:i:s'))->orderBy("posted_at", "desc")->paginate(config("binshopsblog.per_page", 10));
+
+        //load categories in 3 levels
+        $rootList = BinshopsBlogCategory::where('parent_id' ,'=' , null)->get();
+        for($i = 0 ; sizeof($rootList) > $i ; $i++){
+            $rootList[$i]->loadSiblings();
+            for ($j = 0 ; sizeof($rootList[$i]->siblings) > $j; $j++){
+                $rootList[$i]->siblings[$j]->loadSiblings();
+            }
+        }
+
+        return view("vendor.binshopstutorial.index", [
+            'categories' => $rootList,
+            'posts' => $posts,
+            'title' => $title,
+        ]);
+    }
 }

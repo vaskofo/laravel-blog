@@ -147,6 +147,16 @@ class BinshopsBlogPost extends Model implements SearchResultInterface
     }
 
     /**
+     * Returns the public facing URL to view this blog post
+     *
+     * @return string
+     */
+    public function tutorial_url()
+    {
+        return route("binshopstutorial.single", $this->slug);
+    }
+
+    /**
      * Return the URL for editing the post (used for admin users)
      * @return string
      */
