@@ -57,6 +57,9 @@
             ],
             "aliases": {
             }
+        },
+        "branch-alias": {
+            "dev-master": "10-dev"
         }
     }
 }
