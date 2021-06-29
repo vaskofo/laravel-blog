@@ -135,6 +135,7 @@ class BinshopsAdminController extends Controller
             $translation->meta_desc = $request['meta_desc'];
             $translation->slug = $request['slug'];
             $translation->use_view_file = $request['use_view_file'];
+            $translation->post_type = $request['post_type'];
 
             $translation->lang_id = $request['lang_id'];
             $translation->post_id = $new_blog_post->id;
@@ -193,6 +194,7 @@ class BinshopsAdminController extends Controller
                 $translation->meta_desc = $request['meta_desc'];
                 $translation->slug = $request['slug'];
                 $translation->use_view_file = $request['use_view_file'];
+                $translation->post_type = $request['post_type'];
 
                 $translation->lang_id = $request['lang_id'];
                 $translation->post_id = $new_blog_post->id;
