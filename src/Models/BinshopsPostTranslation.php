@@ -25,6 +25,7 @@ class BinshopsPostTranslation extends Model implements SearchResultInterface
         'meta_desc',
         'slug',
         'use_view_file',
+        'post_type',
     ];
 
     /**
