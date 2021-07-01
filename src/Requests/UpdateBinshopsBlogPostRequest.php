@@ -24,4 +24,18 @@ class UpdateBinshopsBlogPostRequest  extends BaseBinshopsBlogPostRequest {
 //        $return['slug'] [] = Rule::unique("binshops_post_translations", "slug")->ignore($this->route()->parameter("blogPostId"));
         return $return;
     }
+
+    public function attributes()
+    {
+        return [
+            'title' => 'título',
+            'subtitle' => 'sub-título',
+            'slug' => 'URL personalizado',
+            'is_published' => 'estado',
+            'posted_at' => 'publicado em',
+            'post_type' => 'visibilidade',
+            'post_body' => 'corpo',
+
+        ];
+    }
 }
