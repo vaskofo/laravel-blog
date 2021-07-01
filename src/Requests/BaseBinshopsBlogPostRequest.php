@@ -46,7 +46,7 @@ abstract class BaseBinshopsBlogPostRequest extends BaseRequest
             'posted_at' => ['nullable', $check_valid_posted_at],
             'title' => ['required', 'string', 'min:1', 'max:255'],
             'subtitle' => ['nullable', 'string', 'min:1', 'max:255'],
-            'post_body' => ['required_without:use_view_file', 'max:2000000'], //medium text
+            'post_body' => ['required', 'max:2000000'], //medium text
             'meta_desc' => ['nullable', 'string', 'min:1', 'max:1000'],
             'short_description' => ['nullable', 'string', 'max:30000'],
             'slug' => [
