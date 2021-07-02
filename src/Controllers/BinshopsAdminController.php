@@ -60,10 +60,10 @@ class BinshopsAdminController extends Controller
 
         return view("binshopsblog_admin::index", [
             'post_translations'=>$posts,
-            'language_id' => $language_id
+            'language_id' => $language_id,
+            'language_list' => BinshopsLanguage::where('active',true)->get(),
         ]);
     }
-
     /**
      * Show form for creating new post
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
@@ -245,7 +245,7 @@ class BinshopsAdminController extends Controller
 
         $post_translation = BinshopsPostTranslation::where(
             [
-                ['lang_id', '=', $language_id],
+//                ['lang_id', '=', $language_id],
                 ['post_id', '=', $blogPostId]
             ]
         )->first();
