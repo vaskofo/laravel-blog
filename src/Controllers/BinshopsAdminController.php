@@ -37,7 +37,7 @@ class BinshopsAdminController extends Controller
      */
     public function __construct()
     {
-        $this->middleware(UserCanManageBlogPosts::class);
+        $this->middleware(UserCanManageBlogPosts::class)->except('index');
         $this->middleware(LoadLanguage::class);
         $this->middleware(PackageSetup::class);
 
