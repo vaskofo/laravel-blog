@@ -149,7 +149,14 @@ class BinshopsReaderController extends Controller
             ['lang_id', "=" , $request->get("lang_id")]
         ])->firstOrFail();
 
-        if($blog_post->post_to !== 'all' && $blog_post->post_to !== $company) return abort(404);
+        foreach(json_decode($blog_post->post_to, true) as $showTo){
+//            dd(!in_array('all', $showTo), !in_array((string)$company, $showTo));
+            if(!in_array('all', $showTo) && !in_array((string)$company, $showTo)){
+                $exists = true;
+            }
+        }
+
+        if(!$exists) return abort(404);
 
         if ($captcha = $this->getCaptchaObject()) {
             $captcha->runCaptchaBeforeShowingPosts($request, $blog_post);
