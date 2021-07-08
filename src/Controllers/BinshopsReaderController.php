@@ -140,10 +140,16 @@ class BinshopsReaderController extends Controller
     public function viewSinglePost(Request $request, $locale, $blogPostSlug)
     {
         // the published_at + is_published are handled by BinshopsBlogPublishedScope, and don't take effect if the logged in user can manage log posts
+        $company = \Auth::user()->company;
+        $company ? $company = $company->id : $company = '';
+
+//            dd($model->post_to !== 'all' && $model->post_to !== $company, $model->post_to, $company);
         $blog_post = BinshopsPostTranslation::where([
             ["slug", "=", $blogPostSlug],
             ['lang_id', "=" , $request->get("lang_id")]
         ])->firstOrFail();
+
+        if($blog_post->post_to !== 'all' && $blog_post->post_to !== $company) return abort(404);
 
         if ($captcha = $this->getCaptchaObject()) {
             $captcha->runCaptchaBeforeShowingPosts($request, $blog_post);
