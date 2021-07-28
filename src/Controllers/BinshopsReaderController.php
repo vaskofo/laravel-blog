@@ -140,8 +140,6 @@ class BinshopsReaderController extends Controller
     public function viewSinglePost(Request $request, $locale, $blogPostSlug)
     {
         // the published_at + is_published are handled by BinshopsBlogPublishedScope, and don't take effect if the logged in user can manage log posts
-        $company = \Auth::user()->company;
-        $company ? $company = $company->id : $company = '';
 
 //            dd($model->post_to !== 'all' && $model->post_to !== $company, $model->post_to, $company);
         $blog_post = BinshopsPostTranslation::where([
@@ -149,14 +147,16 @@ class BinshopsReaderController extends Controller
             ['lang_id', "=" , $request->get("lang_id")]
         ])->firstOrFail();
 
-        foreach(json_decode($blog_post->post_to, true) as $showTo){
-//            dd(!in_array('all', $showTo), !in_array((string)$company, $showTo));
-            if(!in_array('all', $showTo) && !in_array((string)$company, $showTo)){
-                $exists = true;
-            }
+        $company = \Auth::user()->company;
+        $exists = false;
+        $showTo = json_decode($blog_post->post_to, true);
+        if(in_array('all', $showTo) || in_array((string)$company->id, $showTo) || $company->legal_name === 'BPlacer'){
+            $exists = true;
         }
 
-        if(!$exists) return abort(404);
+        if(!$exists) {
+            return abort(404);
+        }
 
         if ($captcha = $this->getCaptchaObject()) {
             $captcha->runCaptchaBeforeShowingPosts($request, $blog_post);
