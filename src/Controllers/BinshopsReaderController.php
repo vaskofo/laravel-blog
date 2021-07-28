@@ -150,8 +150,15 @@ class BinshopsReaderController extends Controller
         $company = \Auth::user()->company;
         $exists = false;
         $showTo = json_decode($blog_post->post_to, true);
-        if(in_array('all', $showTo) || in_array((string)$company->id, $showTo) || $company->legal_name === 'BPlacer'){
-            $exists = true;
+//                dd($company->id, $company->legal_name, $showTo);
+        try{
+            foreach($showTo as $show){
+                if(in_array('all', $show) || in_array($company->id, $show) || $company->legal_name === 'BPlacer'){
+                    $exists = true;
+                }
+            }
+        } catch (\Exception $e){
+            \Log::error('Error getting posts to home', [ $e->getMessage(), $e->getFile(), $e->getLine()]);
         }
 
         if(!$exists) {
