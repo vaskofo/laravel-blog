@@ -40,6 +40,7 @@ class BinshopsAdminController extends Controller
         $this->middleware(UserCanManageBlogPosts::class)->except('index');
         $this->middleware(LoadLanguage::class);
         $this->middleware(PackageSetup::class);
+        $this->middleware('auth');
 
         if (!is_array(config("binshopsblog"))) {
             throw new \RuntimeException('The config/binshopsblog.php does not exist. Publish the vendor files for the BinshopsBlog package by running the php artisan publish:vendor command');

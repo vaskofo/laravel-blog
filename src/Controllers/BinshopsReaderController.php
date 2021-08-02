@@ -26,6 +26,8 @@ class BinshopsReaderController extends Controller
     public function __construct()
     {
         $this->middleware(DetectLanguage::class);
+        $this->middleware('auth');
+
     }
 
     /**
