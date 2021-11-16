@@ -57,7 +57,7 @@ class BinshopsReaderController extends Controller
             foreach ($posts_1 as $post) {
                 $trans = $post->postTranslations[0];
                 $trans->post = $post;
-                array_push($posts, $trans);
+                $posts[] = $trans;
             }
 
             // at the moment we handle this special case (viewing a category) by hard coding in the following two lines.
